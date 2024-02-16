@@ -1,84 +1,50 @@
 let playerScore = 0;
 let computerScore = 0;
-choice = ["rock", "paper", "scissors"];
-const rock = document.querySelector("#rock");
-const paper = document.querySelector("#paper");
-const scissors = document.querySelector("#scissors");
+let roundsPlayed = 0;
 
-rock.addEventListener("click", ()=>{
-    console.log("rock");
-})
-paper.addEventListener("click", ()=>{
-    console.log("paper");
-})
-scissors.addEventListener("click", ()=>{
-    console.log("scissors");
-})
+function computerPlay() {
+  const choices = ['rock', 'paper', 'scissors'];
+  const randomIndex = Math.floor(Math.random() * choices.length);
+  return choices[randomIndex];
+}
 
-const getComputerChoice = (choice)=>{
-    const random = Math.floor(Math.random() * choice.length);
-    return choice[random];
-};
+function play(playerSelection) {
+  const computerSelection = computerPlay();
+  let result = '';
 
-//  const playRound = (playerSelection,computerSelection)=>
-//  {
-//      if (playerSelection =='rock' && computerSelection =='paper'){
-//          computerScore+=1
-//          return "one point for computer - Paper beats rock";      
-//      }
-//      if(playerSelection =='rock' && computerSelection=='scissors'){
-//          playerScore+=1
-//          return "one point for player - Rock beats scissors";
-//      }
-//      if(playerSelection =='rock' && computerSelection =='rock'){
-//          return "Tie - rock rock rock rock";
-//      }
-//      if(playerSelection =='scissors' && computerSelection=='scissors'){
-//          return "Tie - scissors scissors scissors scissors";
-//      }
-//      if(playerSelection =='scissors' &&computerSelection =='rock'){
-//          computerScore+=1
-//          return "one point for computer - scissors cannot beat rock";
-//      }
-//      if(playerSelection =='scissors' && computerSelection=='paper'){
-//          playerScore+=1
-//          return "one point for Player - paper cannot beat scissors";      
-//      }
-//      if(playerSelection =='paper' && computerSelection =='scissors'){
-//          computerScore+=1;
-//          return"one point for Computer - paper cannot beat scissors";
-//      }
-//      if(playerSelection =='paper' && computerSelection=='rock'){
-//          playerScore+=1;
-//          return"one point for Player - rock cannot beat papers";      
-//      }
-//      if(playerSelection =='paper' &&computerSelection =='paper'){
-//          return"Tie - paper paper paper paper";
-//      }
-//  };
-//  const ending = () =>{
-//      if(playerScore<computerScore){
-//          console.log("Computer won")
-//      }
-//      else if(playerScore>computerScore){
-//          console.log("Player won")
-//      }
-//      else if(playerScore=computerScore){
-//          console.log("Tie")
-//      }
-//  };
-//   const PlayGame= ()=>{
-//         let computerSelection = getComputerChoice(choice); 
-//           let playerSelection = prompt("Choose one from rock paper or scissors").toString().toLowerCase();
-          
-//           playRound(playerSelection,computerSelection)
-//           console.log(`Your score: ${playerScore}`)
-//           console.log(`Computer score: ${computerScore}`)
-      
-//       ending();
-//   }
-//   PlayGame();
-//  // console.log(computerSelection);
-//  console.log(computerScore);
-//  console.log(playerSelection);
-// //  console.log(playerScore);
+  if (playerSelection === computerSelection) {
+    result = "It's a tie!";
+  } else if (
+    (playerSelection === 'rock' && computerSelection === 'scissors') ||
+    (playerSelection === 'paper' && computerSelection === 'rock') ||
+    (playerSelection === 'scissors' && computerSelection === 'paper')
+  ) {
+    result = 'You win!';
+    playerScore++;
+  } else {
+    result = 'You lose!';
+    computerScore++;
+  }
+
+  roundsPlayed++;
+
+  document.getElementById('result').innerText = `You chose ${playerSelection}. Computer chose ${computerSelection}. ${result}`;
+
+  if (roundsPlayed === 5) {
+    declareWinner();
+  }
+}
+
+function declareWinner() {
+  if (playerScore > computerScore) {
+    document.getElementById('result').innerText = "You've won the game!";
+  } else if (playerScore < computerScore) {
+    document.getElementById('result').innerText = "Computer has won the game!";
+  } else {
+    document.getElementById('result').innerText = "It's a tie!";
+  }
+  // Reset scores and rounds played for a new game
+  playerScore = 0;
+  computerScore = 0;
+  roundsPlayed = 0;
+}
